@@ -39,6 +39,7 @@ jobs:
         sudo curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
         helm plugin install https://github.com/chartmuseum/helm-push.git
         helm repo add fluent https://fluent.github.io/helm-charts
+        helm repo add grafana https://grafana.github.io/helm-charts
         helm repo add deepflow https://deepflowys.github.io/deepflow
         helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics
         helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -55,6 +56,7 @@ jobs:
       shell: bash
       run: |
         echo ${GITHUB_WORKSPACE}
+        cd ${GITHUB_WORKSPACE}/ && ls -l 
         cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf fluent-bit ; helm fetch fluent/fluent-bit --untar
         cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf deepflow-agent ; helm fetch deepflow/deepflow-agent --untar
         cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf prometheus ; helm fetch prometheus-community/prometheus  --untar
