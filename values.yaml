@@ -19,7 +19,7 @@ grafana-agent:
 fluent-bit:
   enabled: false
   annotations:
-    iam.amazonaws.com/role: kube2iam-default
+    iam.amazonaws.com/role: CloudWatchAgentServerRole
   image:
     repository: artifact.onwalk.net/k8s/aws-for-fluent-bit
     tag: "2.29.0"
@@ -98,7 +98,7 @@ kube2iam:
     interface: eni+
   extraArgs:
     base-role-arn: "arn:aws-cn:iam::xxxxxxxxxxx:role/"
-    default-role: kube2iam-default
+    default-role: CloudWatchAgentServerRole
   rbac:
     create: true
   verbose: true
