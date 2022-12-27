@@ -64,7 +64,7 @@ jobs:
         cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf kube-state-metrics ; helm fetch prometheus-community/kube-state-metrics --untar
         cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf prometheus-node-exporter ; helm fetch prometheus-community/prometheus-node-exporter --untar
         cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm *.tgz -f
-        cd ${GITHUB_WORKSPACE}/ObservableAgent/ && helm package ./ &&  helm cm-push observablestack-${TAG}.tgz sync
+        cd ${GITHUB_WORKSPACE}/ObservableAgent/ && helm package ./ &&  helm cm-push observableagent-${TAG}.tgz sync
 
     - name: Merge Upstream Repo
       shell: bash
