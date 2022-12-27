@@ -38,25 +38,13 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
         helm plugin install https://github.com/chartmuseum/helm-push.git
-        helm repo add neo4j https://helm.neo4j.com/neo4j
         helm repo add fluent https://fluent.github.io/helm-charts
-        helm repo add grafana https://grafana.github.io/helm-charts
         helm repo add deepflow https://deepflowys.github.io/deepflow
         helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics
         helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
         echo "$REPO_PASSWORD" | helm repo add sync --username=admin --password-stdin https://artifact.onwalk.net/chartrepo/k8s/
         echo "$REPO_PASSWORD" | docker login --username=admin --password-stdin artifact.onwalk.net
         helm repo up
-
-    - name: Sync images
-      shell: bash
-      run: |
-        docker pull registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.7.0
-        docker tag  registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.7.0 artifact.onwalk.net/k8s/kube-state-metrics:v2.7.0
-        docker push artifact.onwalk.net/k8s/kube-state-metrics:v2.7.0
-        docker pull fstab/aws-cli:latest 
-        docker tag  fstab/aws-cli:latest artifact.onwalk.net/k8s/aws-cli:latest
-        docker push artifact.onwalk.net/k8s/aws-cli:latest
 
     - name: Clone Source
       shell: bash
@@ -67,19 +55,14 @@ jobs:
       shell: bash
       run: |
         echo ${GITHUB_WORKSPACE}
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf neo4j ; helm fetch neo4j/neo4j --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf loki ; helm fetch grafana/loki --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf grafana ; helm fetch grafana/grafana --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf deepflow ; helm fetch deepflow/deepflow --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf prometheus ; helm fetch prometheus-community/prometheus  --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf alertmanager ; helm fetch prometheus-community/alertmanager --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf kube-state-metrics ; helm fetch prometheus-community/kube-state-metrics --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf prometheus-node-exporter ; helm fetch prometheus-community/prometheus-node-exporter --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf fluent-bit ; helm fetch fluent/fluent-bit --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf deepflow-agent ; helm fetch deepflow/deepflow-agent --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm -rvf grafana-agent-operator ; helm fetch grafana/grafana-agent-operator --untar
-        cd ${GITHUB_WORKSPACE}/ObservableStack/charts && rm *.tgz -f
-        cd ${GITHUB_WORKSPACE}/ObservableStack/ && helm package ./ &&  helm cm-push observablestack-${TAG}.tgz sync
+        cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf fluent-bit ; helm fetch fluent/fluent-bit --untar
+        cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf deepflow-agent ; helm fetch deepflow/deepflow-agent --untar
+        cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf prometheus ; helm fetch prometheus-community/prometheus  --untar
+        cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf grafana-agent-operator ; helm fetch grafana/grafana-agent-operator --untar
+        cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf kube-state-metrics ; helm fetch prometheus-community/kube-state-metrics --untar
+        cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm -rvf prometheus-node-exporter ; helm fetch prometheus-community/prometheus-node-exporter --untar
+        cd ${GITHUB_WORKSPACE}/ObservableAgent/charts && rm *.tgz -f
+        cd ${GITHUB_WORKSPACE}/ObservableAgent/ && helm package ./ &&  helm cm-push observablestack-${TAG}.tgz sync
 
     - name: Merge Upstream Repo
       shell: bash

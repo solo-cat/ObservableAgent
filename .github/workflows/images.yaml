@@ -40,3 +40,7 @@ jobs:
         docker pull fstab/aws-cli:latest 
         docker tag  fstab/aws-cli:latest artifact.onwalk.net/k8s/aws-cli:latest
         docker push artifact.onwalk.net/k8s/aws-cli:latest
+
+        docker pull fluent/fluent-bit:2.0.8
+        docker tag  fluent/fluent-bit:2.0.8 artifact.onwalk.net/k8s/fluent-bit:2.0.8
+        docker push artifact.onwalk.net/k8s/fluent-bit:2.0.8

@@ -20,7 +20,7 @@ EOF
 
 helm repo add stable https://artifact.onwalk.net/chartrepo/k8s/
 helm repo update
-helm upgrade --install observable stable/observablestack -f values.yaml 
+helm upgrade --install observableagent stable/observableagent -n monitoring --create-namespace -f values.yaml 
 ```
 
 # Configure
