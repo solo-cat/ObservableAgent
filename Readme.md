@@ -10,12 +10,32 @@
 
 ```
 cat > values.yaml << EOF
+prometheus-to-cloudwatch:
+  replicaCount: 1
+  podAnnotations:
+    iam.amazonaws.com/role:  kube2iam-default
+  env:
+    CLOUDWATCH_NAMESPACE: "app-dev"
+    CLOUDWATCH_REGION: "cn-northwest-1"
 kube2iam:
   aws:
     region: "cn-northwest-1"
   extraArgs:
-    base-role-arn: "arn:aws-cn:iam::xxxxxxxxxxxx:role/" # replace with your AWS-CN CountID
+    base-role-arn: "arn:aws-cn:iam::xxxxxxxxxxx:role/" # replace aws count id
     default-role: kube2iam-default
+fluent-bit:
+  enabled: true
+  annotations:
+    iam.amazonaws.com/role: kube2iam-default
+  config:
+    outputs: |
+      [OUTPUT]
+          Name cloudwatch_logs
+          region "cn-northwest-1"
+          Match kube.*
+          log_group_name log_group_name    #replace your define name
+          log_stream_name log_stream_name  #replace your define name
+          auto_create_group true
 EOF
 
 helm repo add stable https://artifact.onwalk.net/chartrepo/k8s/
