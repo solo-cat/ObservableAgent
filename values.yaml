@@ -21,8 +21,8 @@ fluent-bit:
   annotations:
     iam.amazonaws.com/role: kube2iam-default
   image:
-    repository: artifact.onwalk.net/k8s/fluent-bit
-    tag: "2.0.8"
+    repository: artifact.onwalk.net/k8s/aws-for-fluent-bit:2.29.0
+    tag: "2.29.0"
     pullPolicy: Always
   config:
     inputs: |

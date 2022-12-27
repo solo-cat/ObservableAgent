@@ -44,3 +44,7 @@ jobs:
         docker pull fluent/fluent-bit:2.0.8
         docker tag  fluent/fluent-bit:2.0.8 artifact.onwalk.net/k8s/fluent-bit:2.0.8
         docker push artifact.onwalk.net/k8s/fluent-bit:2.0.8
+
+        docker pull amazon/aws-for-fluent-bit:2.29.0
+        docker tag  amazon/aws-for-fluent-bit:2.29.0 artifact.onwalk.net/k8s/aws-for-fluent-bit:2.29.0
+        docker push artifact.onwalk.net/k8s/aws-for-fluent-bit:2.29.0

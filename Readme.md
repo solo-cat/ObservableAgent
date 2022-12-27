@@ -13,7 +13,7 @@ cat > values.yaml << EOF
 prometheus-to-cloudwatch:
   replicaCount: 1
   podAnnotations:
-    iam.amazonaws.com/role:  kube2iam-default
+    iam.amazonaws.com/role: CloudWatchAgentServerRole
   env:
     CLOUDWATCH_NAMESPACE: "app-dev"
     CLOUDWATCH_REGION: "cn-northwest-1"
@@ -22,11 +22,10 @@ kube2iam:
     region: "cn-northwest-1"
   extraArgs:
     base-role-arn: "arn:aws-cn:iam::xxxxxxxxxxx:role/" # replace aws count id
-    default-role: kube2iam-default
 fluent-bit:
   enabled: true
   annotations:
-    iam.amazonaws.com/role: kube2iam-default
+    iam.amazonaws.com/role: CloudWatchAgentServerRole
   config:
     outputs: |
       [OUTPUT]

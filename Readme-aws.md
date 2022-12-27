@@ -4,7 +4,7 @@
 
 ## Prep For AWS and EKS
 * EKS Node Role  : kubernetes-node 
-* POD Role       : bucket-accessor
+* POD Role       : CloudWatchAgentServerRole
 * POD AssumeRole : kube2iam-default
 
 Step1 kubernetes-node : create roles for your node to assume or have an IAM policy attached
@@ -24,31 +24,33 @@ Step1 kubernetes-node : create roles for your node to assume or have an IAM poli
 ```
 
 Step2 CloudWatchAgentServerRole: Create IAM Role for Log Agent Pod
-CloudWatchAgentServerPolicy
+CloudWatchFullAccess
 ```
 {
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Effect": "Allow",
             "Action": [
-                "cloudwatch:PutMetricData",
-                "ec2:DescribeVolumes",
-                "ec2:DescribeTags",
-                "logs:PutLogEvents",
-                "logs:DescribeLogStreams",
-                "logs:DescribeLogGroups",
-                "logs:CreateLogStream",
-                "logs:CreateLogGroup"
+                "autoscaling:Describe*",
+                "cloudwatch:*",
+                "logs:*",
+                "sns:*",
+                "iam:GetPolicy",
+                "iam:GetPolicyVersion",
+                "iam:GetRole"
             ],
+            "Effect": "Allow",
             "Resource": "*"
         },
         {
             "Effect": "Allow",
-            "Action": [
-                "ssm:GetParameter"
-            ],
-            "Resource": "arn:aws-cn:ssm:*:*:parameter/AmazonCloudWatch-*"
+            "Action": "iam:CreateServiceLinkedRole",
+            "Resource": "arn:aws-cn:iam::*:role/aws-service-role/events.amazonaws.com/AWSServiceRoleForCloudWatchEvents*",
+            "Condition": {
+                "StringLike": {
+                    "iam:AWSServiceName": "events.amazonaws.com"
+                }
+            }
         }
     ]
 }
