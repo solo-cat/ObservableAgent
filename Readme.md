@@ -4,51 +4,14 @@
 
 # Prep
 
-* [Prep For AWS and EKS](readme-aws.md)
+* [Prep For AWS and EKS](https://github.com/solo-cat/ObservableAgent/blob/main/docs/prep-for-aws.md)
 
 # Install
 
-## Setup EKS/Cloudwatch with AWS credentials
-
-```
-cat > values.yaml << EOF
-prometheus-to-cloudwatch:
-  replicaCount: 1
-  env:
-    AWS_ACCESS_KEY_ID: xxxxxxxx
-    AWS_SECRET_ACCESS_KEY: xxxxxxx
-    CLOUDWATCH_NAMESPACE: "app-dev"
-    CLOUDWATCH_REGION: "cn-northwest-1"
-    PROMETHEUS_SCRAPE_URL: 'http://observableagent-kube-state-metrics.monitoring.svc.cluster.local:8080/metrics'
-fluent-bit:
-  enabled: true
-  env:
-    - name: AWS_ACCESS_KEY_ID
-      value: "xxxxxx"
-    - name: AWS_SECRET_ACCESS_KEY
-      value: "xxxxxx"
-  image:
-    repository: artifact.onwalk.net/k8s/fluent-bit
-    tag: "2.0.8"
-    pullPolicy: Always
-  config:
-    outputs: |
-      [OUTPUT]
-          Name cloudwatch_logs
-          region cn-northwest-1
-          Match kube.*
-          log_group_name  /aws/eks/app-dev/cluster/
-          log_stream_name app_dev
-          auto_create_group true
-EOF
-
-helm repo add stable https://artifact.onwalk.net/chartrepo/k8s/
-helm repo update
-helm upgrade --install observableagent stable/observableagent -n monitoring --create-namespace -f values.yaml 
-```
+* [Setup EKS/Cloudwatch with AWS credentials](https://github.com/solo-cat/ObservableAgent/blob/docs/Setup-EKS-with-Self-build-MonitorSystem.md)
+* [Setup EKS with Self-build MonitorSystem](https://github.com/solo-cat/ObservableAgent/blob/main/docs/Setup-EKS-Cloudwatch-with-AWS-credentials.md)
 
 # Configure
-
 
 # LiveDemo
 
