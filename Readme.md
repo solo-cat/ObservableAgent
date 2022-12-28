@@ -35,7 +35,7 @@ fluent-bit:
     outputs: |
       [OUTPUT]
           Name cloudwatch_logs
-          region "cn-northwest-1"
+          region cn-northwest-1
           Match kube.*
           log_group_name app-dev
           log_stream_name log_stream_eks_app_dev

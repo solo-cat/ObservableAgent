@@ -4,7 +4,7 @@
 
 global:
   aws:
-    region: "cn-northwest-1"
+    region: cn-northwest-1
   repository: artifact.onwalk.net
   image:
     repository: artifact.onwalk.net/k8s/aws-cli
@@ -46,7 +46,7 @@ fluent-bit:
     outputs: |
       [OUTPUT]
           Name cloudwatch_logs
-          region "cn-northwest-1"
+          region cn-northwest-1
           Match kube.*
           log_group_name log_group_name
           log_stream_name log_stream_name 
