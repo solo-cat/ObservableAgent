@@ -8,7 +8,7 @@
 
 # Install
 
-## install For EKS with AWS credentials
+## Setup EKS/Cloudwatch with AWS credentials
 
 ```
 cat > values.yaml << EOF
@@ -37,8 +37,8 @@ fluent-bit:
           Name cloudwatch_logs
           region cn-northwest-1
           Match kube.*
-          log_group_name app-dev
-          log_stream_name log_stream_eks_app_dev
+          log_group_name  /aws/eks/app-dev/cluster/
+          log_stream_name app_dev
           auto_create_group true
 EOF
 
