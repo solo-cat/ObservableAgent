@@ -90,6 +90,7 @@ kube-state-metrics:
     tag: v2.7.0
     sha: 2f4851a097ab81bead7cee8e08673fdc70511b8625ace98798ae8591c9b0c7c9
 kube2iam:
+  enabled: false
   aws:
     region: "cn-northwest-1"
   host:

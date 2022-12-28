@@ -1,4 +1,8 @@
 dependencies:
+- name: kube2iam
+  condition: kube2iam.enabled
+  version: "0.21.6"
+  repository: "https://fluent.github.io/helm-charts"
 - name: deepflow-agent
   repository: https://deepflowys.github.io/deepflow
   version: 6.1.8

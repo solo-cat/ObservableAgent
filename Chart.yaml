@@ -4,6 +4,10 @@ version: 0.1.3
 apiVersion: v2
 description: A Helm chart for Observable Stack agent
 dependencies:
+- name: kube2iam
+  condition: kube2iam.enabled
+  version: "0.21.6"
+  repository: "https://fluent.github.io/helm-charts"
 - name: deepflow-agent
   condition: deepflow-agent.enabled
   version: "6.1.8"
