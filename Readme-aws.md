@@ -3,9 +3,11 @@
 # Prep
 
 ## Prep For AWS and EKS
-* EKS Node Role  : kubernetes-node 
+
+for example:
+
+* EKS Node Role  : AmazonEKSNodeRole 
 * POD Role       : CloudWatchAgentServerRole
-* POD AssumeRole : kube2iam-default
 
 Step1 kubernetes-node : create roles for your node to assume or have an IAM policy attached
 ```
@@ -62,45 +64,8 @@ Trust Relationships
     "Statement": [
         {
             "Effect": "Allow",
-            "Action": [
-                "sts:AssumeRole"
-            ],
             "Principal": {
-                "Service": [
-                    "ec2.amazonaws.com.cn"
-                ]
-            }
-        }
-    ]
-}
-```
-
-Step3 kube2iam-default: Configure Assume Roles & Set trust policy 
-Kube2iam-default-Policy
-```
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "sts:AssumeRole"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:iam::123456789012:role/CloudWatchAgentServerRole"
-    }
-  ]
-}
-```
-Trust Relationships
-
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "Service": "ec2.amazonaws.com"
+                "Service": "ec2.amazonaws.com.cn"
             },
             "Action": "sts:AssumeRole"
         },
@@ -108,10 +73,13 @@ Trust Relationships
             "Sid": "",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::123456789012:role/kubernetes-node"
+                "AWS": "arn:aws-cn:iam::155742804536:role/AmazonEKSNodeRole"
             },
             "Action": "sts:AssumeRole"
         }
     ]
 }
 ```
+
+
+curl http://169.254.169.254/latest/meta-data/iam/security-credentials/

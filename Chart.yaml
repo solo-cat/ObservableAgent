@@ -5,7 +5,7 @@ apiVersion: v2
 description: A Helm chart for Observable Stack agent
 dependencies:
 - name: deepflow-agent
-  condition: deepflow.enabled
+  condition: deepflow-agent.enabled
   version: "6.1.8"
   repository: "https://deepflowys.github.io/deepflow"
 - name: grafana-agent-operator

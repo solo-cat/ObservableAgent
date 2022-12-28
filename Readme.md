@@ -13,19 +13,21 @@ cat > values.yaml << EOF
 prometheus-to-cloudwatch:
   replicaCount: 1
   podAnnotations:
-    iam.amazonaws.com/role: CloudWatchAgentServerRole
+    iam.amazonaws.com/role: 'arn:aws-cn:iam::xxxxxxxxxxx:role/CloudWatchAgentServerRole' # replace aws count id
   env:
     CLOUDWATCH_NAMESPACE: "app-dev"
     CLOUDWATCH_REGION: "cn-northwest-1"
+    PROMETHEUS_SCRAPE_URL: 'observableagent-kube-state-metrics.monitoring.svc.cluster.local:8080/metrics'
 kube2iam:
   aws:
     region: "cn-northwest-1"
   extraArgs:
-    base-role-arn: "arn:aws-cn:iam::xxxxxxxxxxx:role/" # replace aws count id
+    base-role-arn: "arn:aws-cn:iam::xxxxxxxxxxx:role/"
+    default-role: CloudWatchAgentServerRole
 fluent-bit:
   enabled: true
   annotations:
-    iam.amazonaws.com/role: CloudWatchAgentServerRole
+    iam.amazonaws.com/role: 'arn:aws-cn:iam::xxxxxxxxxxx:role/CloudWatchAgentServerRole' # replace aws count id
   config:
     outputs: |
       [OUTPUT]
@@ -49,7 +51,7 @@ helm upgrade --install observableagent stable/observableagent -n monitoring --cr
 
 # Reference 
 
-- https://helm.neo4j.com/neo4j
+- https://github.com/jtblin/kube2iam
 - https://grafana.github.io/helm-charts
 - https://deepflowys.github.io/deepflow
 - https://prometheus-community.github.io/helm-charts

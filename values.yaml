@@ -95,7 +95,7 @@ kube2iam:
   host:
     port: "8181"
     iptables: true
-    interface: eni+
+    interface: cni0
   extraArgs:
     base-role-arn: "arn:aws-cn:iam::xxxxxxxxxxx:role/"
     default-role: CloudWatchAgentServerRole
@@ -111,7 +111,7 @@ prometheus-to-cloudwatch:
     CLOUDWATCH_REGION: "cn-northwest-1"
     CLOUDWATCH_PUBLISH_TIMEOUT: "5"
     PROMETHEUS_SCRAPE_INTERVAL: "20"
-    PROMETHEUS_SCRAPE_URL: "{{ ExtraVars.metrics_url }}"
+    PROMETHEUS_SCRAPE_URL: "observableagent-kube-state-metrics.monitoring.svc.cluster.local:8080/metrics"
     ACCEPT_INVALID_CERT: "true"
   image:
     repository: "artifact.onwalk.net/k8s/prometheus-to-cloudwatch"
