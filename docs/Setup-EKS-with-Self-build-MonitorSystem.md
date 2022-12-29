@@ -1,9 +1,51 @@
+# Prep Options
+
+## Server config
+```
+curl -o /usr/bin/deepflow-ctl https://deepflow-ce.oss-cn-beijing.aliyuncs.com/bin/ctl/stable/linux/$(arch | sed 's|x86_64|amd64|' | sed 's|aarch64|arm64|')/deepflow-ctl
+chmod a+x /usr/bin/deepflow-ctl
+
+unset CLUSTER_NAME
+CLUSTER_NAME="cluster_name"  # FIXME: K8s cluster name
+cat << EOF | deepflow-ctl domain create -f -
+name: $CLUSTER_NAME
+type: kubernetes
+EOF
+deepflow-ctl domain list $CLUSTER_NAME  # Get K8sClusterID
+```
+
+## client config
+```
+kubectl get nodes
+kubectl label nodes node-xxxx prometheus=true --overwrite
+```
+
+# Install Agent
 ```
 cat > values.yaml << EOF
+kube-state-metrics:
+  enabled: false
 prometheus-to-cloudwatch:
   enabled: false
+deepflow-agent:
+  enabled: true
+  deepflowServerNodeIPS:
+    - x.x.x.x
+  deepflowK8sClusterID: d-3CdBjFev1Y
+prometheus:
+  enabled: true
+  extraLabels:
+    cluster: app-dev
+  server:
+    remoteWrite:
+      - 'url: "https://prometheus.onwalk.net/api/v1/write"'
+  alertmanager:
+    enabled: false
+  prometheus-pushgateway:
+    enabled: false
 fluent-bit:
   enabled: true
+  logLevel: debug
   image:
     repository: artifact.onwalk.net/k8s/fluent-bit
     tag: "2.0.8"
@@ -11,17 +53,17 @@ fluent-bit:
   config:
     outputs: |
       [OUTPUT]
-          Name cloudwatch_logs
-          region cn-northwest-1
+          Name        loki
           Match kube.*
-          log_group_name  /aws/eks/app-dev/cluster/
-          log_stream_name app_dev
-          auto_create_group true
+          Host        loki.onwalk.net
+          port        443
+          tls         on
+          tls.verify  on
 EOF
 
 helm repo add stable https://artifact.onwalk.net/chartrepo/k8s/
 helm repo update
-helm upgrade --install observableagent stable/observableagent -n monitoring --create-namespace -f values.yaml 
+helm upgrade --install observableagent stable/observableagent -n monitoring --create-namespace -f values.yaml
 ```
 
 # Configure
