@@ -1,6 +1,9 @@
 ```
 cat > values.yaml << EOF
+kube-state-metrics:
+  enabled: true
 prometheus-to-cloudwatch:
+  enabled: true
   replicaCount: 1
   env:
     AWS_ACCESS_KEY_ID: xxxxxxxx

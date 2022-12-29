@@ -104,6 +104,7 @@ kube2iam:
     create: true
   verbose: true
 prometheus-to-cloudwatch:
+  enabled: false
   replicaCount: 1
   podAnnotations:
     iam.amazonaws.com/role:  kube2iam-default

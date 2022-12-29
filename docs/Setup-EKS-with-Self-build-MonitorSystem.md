@@ -30,19 +30,24 @@ prometheus-to-cloudwatch:
 deepflow-agent:
   enabled: true
   deepflowServerNodeIPS:
-    - x.x.x.x
+    - 161.189.105.101
   deepflowK8sClusterID: d-3CdBjFev1Y
 prometheus:
   enabled: true
-  extraLabels:
-    cluster: app-dev
   server:
+    extraFlags:
+    - enable-feature=expand-external-labels
     remoteWrite:
-      - 'url: "https://prometheus.onwalk.net/api/v1/write"'
+    - name: remote_prometheus
+      url: 'https://prometheus.onwalk.net/api/v1/write'
   alertmanager:
     enabled: false
   prometheus-pushgateway:
     enabled: false
+  kube-state-metrics:
+    image:
+      repository: artifact.onwalk.net/k8s/kube-state-metrics
+      tag: v2.7.0
 fluent-bit:
   enabled: true
   logLevel: debug
@@ -64,6 +69,17 @@ EOF
 helm repo add stable https://artifact.onwalk.net/chartrepo/k8s/
 helm repo update
 helm upgrade --install observableagent stable/observableagent -n monitoring --create-namespace -f values.yaml
+```
+
+## Post setup
+add cluster label
+
+kubectl  edit cm observableagent-prometheus-server -n monitoring
+```
+  prometheus.yml: |
+    global:
+      external_labels:
+        cluster: app-dev
 ```
 
 # Configure
