@@ -52,3 +52,7 @@ jobs:
         docker pull alpine:latest
         docker tag  alpine:latest artifact.onwalk.net/k8s/alpine:latest
         docker push artifact.onwalk.net/k8s/alpine:latest
+
+        docker pull amazonlinux:latest
+        docker tag  amazonlinux:latest artifact.onwalk.net/k8s/amazonlinux:latest
+        docker push artifact.onwalk.net/k8s/amazonlinux:latest
