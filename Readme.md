@@ -21,6 +21,7 @@
 - https://grafana.github.io/helm-charts
 - https://deepflowys.github.io/deepflow
 - https://prometheus-community.github.io/helm-charts
+- https://stackoverflow.com/questions/70437057/prometheus-remote-write
 - https://github.com/fluent/fluent-bit-docs/blob/43c4fe134611da471e706b0edb2f9acd7cdfdbc3/administration/aws-credentials.md
 
 # Todo
