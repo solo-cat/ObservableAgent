@@ -59,4 +59,4 @@ jobs:
 
         docker pull k8s.gcr.io/metrics-server/metrics-server:v0.6.2
         docker tag  k8s.gcr.io/metrics-server/metrics-server:v0.6.2 artifact.onwalk.net/k8s/metrics-server:v0.6.2
-        docker push artifact.onwalk.net/metrics-server:v0.6.2t
+        docker push artifact.onwalk.net/k8s/metrics-server:v0.6.2
